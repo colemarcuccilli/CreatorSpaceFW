@@ -114,36 +114,30 @@ export default function Scene1Arrival() {
 
     c.fillStyle = "#fff";
     c.textAlign = "center";
+    // Use "middle" baseline throughout — avoids em-square vs glyph mismatch
+    c.textBaseline = "middle";
 
     const s1 = Math.min(w / 7, 150);
-    c.font = `400 ${s1}px ${displayFont}`;
-
-    const m1 = c.measureText("CREATOR SPACE");
-    const textH1 = m1.actualBoundingBoxAscent + m1.actualBoundingBoxDescent;
-
     const s2 = s1 * 0.40;
-    c.font = `400 ${s2}px ${monoFont}`;
-    const m2 = c.measureText("FORT WAYNE");
-    const textH2 = m2.actualBoundingBoxAscent + m2.actualBoundingBoxDescent;
+    const gap = s1 * 0.35;
 
-    const lineGap = s1 * 0.3;
-    const totalH = textH1 + lineGap + textH2;
-    const startY = (h - totalH) / 2 - s1 * 0.05;
+    // Position both lines centered in the canvas
+    // "CREATOR SPACE" centered above midpoint, "FORT WAYNE" below
+    const line1Y = h / 2 - gap / 2 - s2 * 0.3;
+    const line2Y = h / 2 + s1 * 0.45 + gap / 2;
 
     c.font = `400 ${s1}px ${displayFont}`;
-    c.textBaseline = "top";
-    c.fillText("CREATOR SPACE", w / 2, startY);
+    c.fillText("CREATOR SPACE", w / 2, line1Y);
 
     c.font = `400 ${s2}px ${monoFont}`;
-    c.textBaseline = "top";
-    c.fillText("FORT WAYNE", w / 2, startY + textH1 + lineGap);
+    c.fillText("FORT WAYNE", w / 2, line2Y);
 
     const data = c.getImageData(0, 0, w, h).data;
     const pts: [number, number][] = [];
-    const gap = Math.max(3, Math.floor(Math.min(w, h) / 280));
+    const step = Math.max(3, Math.floor(Math.min(w, h) / 280));
 
-    for (let y = 0; y < h; y += gap) {
-      for (let x = 0; x < w; x += gap) {
+    for (let y = 0; y < h; y += step) {
+      for (let x = 0; x < w; x += step) {
         if (data[(y * w + x) * 4 + 3] > 128) {
           pts.push([x, y]);
         }
