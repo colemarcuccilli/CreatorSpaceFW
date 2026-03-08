@@ -101,6 +101,24 @@ export default function Scene1Arrival() {
   const cameraRef = useRef<HTMLDivElement>(null);
   const scrollPromptRef = useRef<HTMLDivElement>(null);
 
+  // Force-set a canvas font at the given size, trying multiple formats.
+  // Canvas c.font silently rejects invalid strings and stays at 10px default.
+  const setCanvasFont = useCallback((c: CanvasRenderingContext2D, size: number, name: string) => {
+    const tries = [
+      `${size}px "${name}"`,
+      `${size}px ${name}`,
+      `400 ${size}px "${name}"`,
+      `400 ${size}px ${name}`,
+      `bold ${size}px Arial, sans-serif`,
+      `${size}px sans-serif`,
+    ];
+    for (const t of tries) {
+      c.font = t;
+      // If it took, the font string won't start with "10px"
+      if (!c.font.startsWith("10px")) return;
+    }
+  }, []);
+
   const sampleText = useCallback((w: number, h: number) => {
     const off = document.createElement("canvas");
     off.width = w;
@@ -115,16 +133,13 @@ export default function Scene1Arrival() {
     const s2 = s1 * 0.40;
     const lineGap = s1 * 0.35;
 
-    // Position both lines centered in the canvas
     const line1Y = h / 2 - lineGap / 2 - s2 * 0.3;
     const line2Y = h / 2 + s1 * 0.45 + lineGap / 2;
 
-    // Use font names matching the @font-face declarations from next/font
-    // (canvas font setter silently fails if the string format is unexpected)
-    c.font = `400 ${s1}px "Changa One"`;
+    setCanvasFont(c, s1, "Changa One");
     c.fillText("CREATOR SPACE", w / 2, line1Y);
 
-    c.font = `400 ${s2}px "IBM Plex Mono"`;
+    setCanvasFont(c, s2, "IBM Plex Mono");
     c.fillText("FORT WAYNE", w / 2, line2Y);
 
     const data = c.getImageData(0, 0, w, h).data;
@@ -139,7 +154,7 @@ export default function Scene1Arrival() {
       }
     }
     return pts;
-  }, []);
+  }, [setCanvasFont]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
