@@ -96,7 +96,7 @@ export default function Scene3Landing() {
       </svg>
 
       <div className="relative z-10 px-6 text-center">
-        <div className="landing-text font-[family-name:var(--font-display)] text-5xl leading-[0.95] sm:text-7xl md:text-8xl lg:text-9xl">
+        <div className="landing-text font-[family-name:var(--font-display)] text-5xl leading-[1.1] sm:text-7xl md:text-8xl lg:text-9xl">
           {[["FREE", "MONTHLY"], ["MEETUPS", "FOR"], ["FORT", "WAYNE"]].map((line, li) => (
             <p key={li}>
               {line.map((word, wi) => (
@@ -123,7 +123,7 @@ export default function Scene3Landing() {
           ))}
         </div>
         <p
-          className="landing-text mt-2 font-[family-name:var(--font-display)] text-6xl leading-[0.9] text-[var(--color-coral)] sm:text-8xl md:text-9xl lg:text-[11rem]"
+          className="landing-text mt-2 font-[family-name:var(--font-display)] text-6xl leading-[1.1] text-[var(--color-coral)] sm:text-8xl md:text-9xl lg:text-[11rem]"
           style={{ filter: "url(#liquid-distortion)" }}
         >
           CREATORS
